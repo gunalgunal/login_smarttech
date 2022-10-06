@@ -1,9 +1,6 @@
 package com.login.smarttech.entity;
-
-
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 @Entity
@@ -11,13 +8,13 @@ public class UserInformation {
     @Id
     @GeneratedValue
     private int id;
-    @NotNull
+   @NotNull(message="firstname must not be null")
     private String firstName;
     private String lastName;
     @Column(unique = true)
-    @NotNull
+    @NotNull(message="name must not be null")
     private String userName;
-    @NotNull
+    @NotNull(message="password must not be null")
     private String password;
     private boolean accessApplicable;
     private String currentAccessType;
@@ -25,6 +22,9 @@ public class UserInformation {
     @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.EAGER)
     @JoinColumn
     private List<RoleInformation> roles;
+
+
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateAndTime;
     @Temporal(TemporalType.TIMESTAMP)
@@ -34,6 +34,14 @@ public class UserInformation {
     {
 
         dateAndTime=new Date();
+
+    }
+    public Date getEditTimestamp() {
+        return editTimestamp;
+    }
+
+    public void setEditTimestamp(Date editTimestamp) {
+        this.editTimestamp = editTimestamp;
     }
 
     public int getId() {

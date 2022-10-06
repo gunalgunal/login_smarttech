@@ -1,8 +1,7 @@
 package com.login.smarttech.controller;
 
 
-import com.login.smarttech.entity.Login;
-import com.login.smarttech.entity.PutDetails;
+import com.login.smarttech.Dto.UserDto;
 import com.login.smarttech.entity.UserInformation;
 import com.login.smarttech.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,20 +39,21 @@ public class LoginController {
         return "user";
     }
     @PutMapping("/update/enrollment")
-    public void update(@RequestBody PutDetails details)
+    public void update(@RequestBody UserDto details)
     {
-
-        service.updateAccessType(details.getUserName(), details.getNewAccessType(),details.getEditTimestamp());
+     UserDto user=new UserDto();
+     user.onCreate();
+     service.updateAccessType(details.getUserName(), details.getNewAccessType(),user.getEditTimestamp());
     }
     @DeleteMapping("/enrollment/delete")
-    public ResponseEntity<?> delete(@RequestBody Login login)
+    public ResponseEntity<?> delete(@RequestBody UserDto login)
     {
-        Optional<UserInformation> information=service.findByUsername(login.getUsername());
+        Optional<UserInformation> information=service.findByUsername(login.getUserName());
 
 
         if(information.isPresent())
         {
-            Integer num= service.updateAccessApplicable(login.getUsername(),false);
+            Integer num= service.updateAccessApplicable(login.getUserName(),false);
             return ResponseEntity.ok(Map.of("message","user deleted"));
         }
 
