@@ -27,14 +27,17 @@ public class HandlingException {
         });
         return map;
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public Map<String,String> conflict(DataIntegrityViolationException e) {
 
-        String message = NestedExceptionUtils.getMostSpecificCause(e).getMessage();
+       // String message = NestedExceptionUtils.getMostSpecificCause(e).getMessage();
+        String message =NestedExceptionUtils.buildMessage("username already exists",e).substring(0,23);
         Map<String,String> map=new HashMap<>();
        map.put("message",message);
         return map;
     }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public Map<String,String> handlePasswordException(IllegalArgumentException e) {
 
