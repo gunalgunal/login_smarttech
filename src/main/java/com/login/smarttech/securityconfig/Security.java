@@ -33,8 +33,8 @@ public class Security extends WebSecurityConfigurerAdapter {
         //      .and().authorizeRequests().antMatchers("/admin/**").authenticated().anyRequest().hasAnyRole("ADMIN")
     //        .and().formLogin().permitAll();
         http.httpBasic().and().authorizeRequests()
-              .antMatchers("/admin","/enrollment").hasAnyRole("ADMIN","SUBUSER")
-                .antMatchers("/user").permitAll()
+              .antMatchers("/admin").hasAnyRole("ADMIN","SUBUSER")
+                .antMatchers("/enrollment").permitAll()
                 .and().csrf().disable().formLogin().disable();
     }
 
